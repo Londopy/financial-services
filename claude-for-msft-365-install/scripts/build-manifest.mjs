@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 // Fetches the canonical add-in manifest and writes a customized copy with your
-// org's config baked into the taskpane URL: credential-bearing keys in the
-// fragment (#k=v), everything else as query parameters (?k=v).
+// org's config baked into the taskpane URL: credentials after #, other settings after ?.
 //
 // Usage: node build-manifest.mjs <office|outlook> <out.xml> key=value [key=value ...]
 // Example: node build-manifest.mjs office acme.xml gcp_project_id=acme gcp_region=us-east5
@@ -17,9 +16,7 @@ const MANIFESTS = {
 // schema repeats Taskpane.Url across V1_0 and V1_1 VersionOverrides, hence /g.
 const URL_SLOTS = [/(<SourceLocation\s+DefaultValue=")([^"]+)(")/g, /(id="Taskpane\.Url"\s+DefaultValue=")([^"]+)(")/g];
 
-// Keys whose values are, or can carry, credentials. These go in the URL fragment,
-// which browsers never send in a request; the add-in reads it like the query string
-// and ignores gateway_token / azure_api_key / google_client_secret after `?` from 2026-10-19.
+// Keys that are, or can carry, credentials go in the URL fragment, not the query string.
 const FRAGMENT_KEYS = new Set([
   "gateway_token",
   "azure_api_key",
