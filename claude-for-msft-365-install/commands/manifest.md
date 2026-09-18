@@ -4,8 +4,13 @@ description: Generate the add-in manifest XML with your cloud config baked in
 
 # Generate add-in manifest
 
-The script fetches the canonical manifest and appends your config as URL query
-parameters. The add-in reads them at startup. Outlook uses a separate template
+The script fetches the canonical manifest and appends your config to the
+taskpane URL: credential-bearing keys (`gateway_token`, `azure_api_key`,
+`google_client_secret`, `otlp_headers`, `inference_headers`, `mcp_servers`) in
+the fragment after `#`, which browsers never send in a request, the rest as
+query parameters. The add-in reads both at startup; it ignores the first three
+in the query string from 2026-10-19, so regenerate and redeploy manifests built
+before this change. Outlook uses a separate template
 because Microsoft's `MailApp` schema is distinct from the `TaskPaneApp` schema
 Excel/Word/PowerPoint share, so ask which apps they're deploying and generate
 one file per host.
