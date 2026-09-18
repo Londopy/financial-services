@@ -5,7 +5,7 @@ description: Generate the add-in manifest XML with your cloud config baked in
 # Generate add-in manifest
 
 The script fetches the canonical manifest and appends your config to the
-taskpane URL. Credentials (`gateway_token`, `azure_api_key`,
+taskpane URL. Sensitive settings (`gateway_token`, `azure_api_key`,
 `google_client_secret`, `otlp_headers`, `inference_headers`, `mcp_servers`) go
 after `#`; other settings are query parameters. Regenerate and redeploy
 manifests built with earlier versions. Outlook uses a separate template
